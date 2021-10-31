@@ -1,4 +1,4 @@
 # boda-aa-api
-api for a wedding app with react build
+api for a wedding app with quasar(vue) and typescript
 
-front(react) --> https://github.com/zebader/boda-aa-react
+Client Vue n typescript --> https://github.com/zebader/boda-aa-vue

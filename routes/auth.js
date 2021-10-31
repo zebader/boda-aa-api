@@ -5,7 +5,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 
 const User = require('../models/user');
-const Preferences = require('../models/preferences');
+const Guest = require('../models/guest');
 
 const {
   isLoggedIn,
@@ -15,18 +15,27 @@ const {
 
 router.get('/me', isLoggedIn(), async (req, res, next) => {
   try {
-    const user = await User.findById(req.session.currentUser._id).populate('userPreferences');
+    const user = await User.findById(req.session.currentUser._id).populate('guests');
+    console.log("user", user);
     req.session.currentUser = user
-    return res.json(req.session.currentUser);
+
+    const userDataToSend = {
+        username:req.session.currentUser.username,
+        email:req.session.currentUser.email,
+        role:req.session.currentUser.role,
+        id:req.session.currentUser._id,
+        guests: req.session.currentUser.guests
+    }
+    return res.json(userDataToSend);
   } catch(error) {
     next(error);
   }
 });
 
 router.post('/login', isNotLoggedIn(), validationLoggin(), async (req, res, next) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
     try {
-      const user = await User.findOne({ username }).populate('userPreferences');
+      const user = await User.findOne({ email }).populate('guests');
       if (!user) {
         next(createError(404));
       } else if (bcrypt.compareSync(password, user.password)) {
@@ -46,17 +55,29 @@ router.post(
   isNotLoggedIn(),
   validationLoggin(),
   async (req, res, next) => {
-    const { username, password, userType } = req.body;
+    const { username, password, email, phone, role } = req.body;
       try {
-      const user = await User.findOne({ username }, 'username').populate('userPreferences');
+        const user = await User.findOne({ username }, 'username').populate('guests');
       if (user) {
         return next(createError(422));
       } else {
         const salt = bcrypt.genSaltSync(10);
         const hashPass = bcrypt.hashSync(password, salt);
-        const newUser = await User.create({ username, password: hashPass, userType });
+
+        const newUser = await User.create({ username, password: hashPass, email, phone, role });
+
         req.session.currentUser = newUser;
-        res.status(200).json(newUser);
+
+        const userDataToSend = {
+            username:newUser.username,
+            email:newUser.email,
+            role:newUser.role,
+            id:newUser._id,
+            guests:newUser.guests
+        }
+        
+        console.log(userDataToSend);
+        res.status(200).json(userDataToSend);
       }
     } catch (error) {
       next(error);

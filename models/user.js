@@ -4,8 +4,11 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   username: { type:String, required:true}, 
   password: { type:String, required:true },
-  userType: { type: String, default: 'user'},
-  userPreferences: [{type: Schema.Types.ObjectId, ref: 'Preferences'}]
+  email: { type:String, required:true}, 
+  phone: { type:String, required:true },
+  role: {type: String, enum: ['admin','user','guest'], default: 'user', required:true},
+  accepted: { type:String, enum: ['waiting','yes','no'], default: 'waiting', required:true},
+  guests: [{type: Schema.Types.ObjectId, ref: 'Guest'}]
 }, {
   timestamps: {
     createdAt: 'created_at',

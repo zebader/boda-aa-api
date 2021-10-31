@@ -10,13 +10,12 @@ const cors = require('cors');
 require('dotenv').config();
 
 const auth = require('./routes/auth');
-const preferences = require('./routes/preferences');
+const guest = require('./routes/guest');
 
 mongoose
   .connect(process.env.MONGODB_URI, {
     keepAlive: true,
     useNewUrlParser: true,
-    reconnectTries: Number.MAX_VALUE,
   })
   .then(() => {
     console.log(`Connected to database`);
@@ -65,7 +64,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', auth);
-app.use('/api/preferences', preferences);
+app.use('/api/guest', guest);
 
 
 // REACT APP index.html	

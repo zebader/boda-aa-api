@@ -49,11 +49,14 @@ app.use(
       ttl: 24 * 60 * 60, // 1 day
     }),
     secret: process.env.SECRET_SESSION,
+    name:"sessionId",
     resave: true,
     saveUninitialized: true,
     cookie: {
-      maxAge: 24 * 60 * 60 * 1000,
-      sameSite: 'none'
+        secure: true,
+        httpOnly: true,
+        // maxAge: 24 * 60 * 60 * 1000,
+        sameSite: 'none'
     },
   }),
 );

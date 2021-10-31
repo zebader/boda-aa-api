@@ -6,8 +6,8 @@ const userSchema = new Schema({
   password: { type:String, required:true },
   email: { type:String, required:true}, 
   phone: { type:String, required:true },
-  role: {type: String, enum: ['admin','user','guest'], default: 'user', required:true},
-  accepted: { type:String, enum: ['waiting','yes','no'], default: 'waiting', required:true},
+  role: {type: String, enum: ['admin','user','guest'], default: 'user'},
+  accepted: { type:String, enum: ['waiting','yes','no'], default: 'waiting'},
   guests: [{type: Schema.Types.ObjectId, ref: 'Guest'}]
 }, {
   timestamps: {

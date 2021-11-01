@@ -16,7 +16,6 @@ const {
 router.get('/me', isLoggedIn(), async (req, res, next) => {
   try {
     const user = await User.findById(req.session.currentUser._id).populate('guests');
-    console.log("user", user);
     req.session.currentUser = user
 
     const userDataToSend = {
@@ -33,6 +32,7 @@ router.get('/me', isLoggedIn(), async (req, res, next) => {
 });
 
 router.post('/login', isNotLoggedIn(), validationLoggin(), async (req, res, next) => {
+    console.log("req.body", req.body);
   const { email, password } = req.body;
     try {
       const user = await User.findOne({ email }).populate('guests');
@@ -40,7 +40,16 @@ router.post('/login', isNotLoggedIn(), validationLoggin(), async (req, res, next
         next(createError(404));
       } else if (bcrypt.compareSync(password, user.password)) {
         req.session.currentUser = user;
-        return res.status(200).json(user);
+
+        const userDataToSend = {
+            username:user.username,
+            email:user.email,
+            role:user.role,
+            id:user._id,
+            guests:user.guests
+        }
+
+        return res.status(200).json(userDataToSend);
       } else {
         next(createError(401));
       }

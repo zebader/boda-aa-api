@@ -32,7 +32,6 @@ app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PATCH, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
   res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Expose-Headers', 'Set-Cookie, Authorization');
   next();
 });
 
@@ -62,6 +61,8 @@ app.use(
   }),
 );
 
+app.enable('trust proxy')
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -71,12 +72,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/auth', auth);
 app.use('/api/guest', guest);
 
-
-// REACT APP index.html	
-app.use((req, res, next) => {
-  // If no routes match, send them the React HTML.
-  res.sendFile(__dirname + "/public/index.html");
-});
+app.use(function(req, res, next) {
+    if (!req.secure) {
+       return res.redirect("https://" + req.headers.host + req.url);
+    }
+    next();
+})
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

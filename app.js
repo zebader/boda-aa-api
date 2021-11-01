@@ -29,9 +29,10 @@ const app = express();
 // Add headers
 app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin',  process.env.PUBLIC_DOMAIN);
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PATCH, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
   res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Expose-Headers', 'Set-Cookie, Authorization');
   next();
 });
 
@@ -53,9 +54,9 @@ app.use(
     resave: true,
     saveUninitialized: true,
     cookie: {
-        secure: 'auto',
+        secure: true,
         httpOnly: true,
-        // maxAge: 24 * 60 * 60 * 1000,
+        maxAge: 24 * 60 * 60 * 1000 * 360,
         sameSite: 'none'
     },
   }),

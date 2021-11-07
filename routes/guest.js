@@ -25,21 +25,12 @@ router.get('/', isLoggedIn(), async (req, res, next) => {
 router.post( '/create-guest', isLoggedIn(), async (req, res, next) => {
   const userId = req.session.currentUser._id
     try {
-      const guest = await Guest.create(req.body);
-      await User.findByIdAndUpdate( userId, { $push:{ guests: guest } })
-      const userPopulated = await User.findById(userId).populate('guests');
-
-      req.session.currentUser = userPopulated
-
-      const userDataToSend = {
-        username:req.session.currentUser.username,
-        email:req.session.currentUser.email,
-        role:req.session.currentUser.role,
-        id:req.session.currentUser._id,
-        guests: req.session.currentUser.guests
-    }
+        
+        const guest = await Guest.create(req.body);
+        const user = await User.findByIdAndUpdate( userId, { $push:{ guests: guest } })
+        await Guest.findByIdAndUpdate( guest._id, { $push:{ user: user } })
     
-      return res.status(200).json(userDataToSend);
+      return res.status(200).json(guest);
     } catch (error) {
       next(error);
     }

@@ -1862,6 +1862,11 @@ node-gyp@^3.8.0:
     tar "^2.0.0"
     which "1"
 
+nodemailer@^6.7.1:
+  version "6.7.1"
+  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-6.7.1.tgz#09f72f8b375f7b259291757007bcd902c0174c6e"
+  integrity sha512-E1C8G3rnXrGjznwGP1k+OrW5k4rl0XtqTEB19f7vtJAMYwfxZVSsAu2iY5xJkrZsbVYr6PwwAwRmFlakPoFC0A==
+
 nodemon@^1.18.6:
   version "1.19.4"
   resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.19.4.tgz#56db5c607408e0fdf8920d2b444819af1aae0971"
@@ -2877,6 +2882,11 @@ uuid@^3.3.2:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
+
+uuidv1@^1.6.14:
+  version "1.6.14"
+  resolved "https://registry.yarnpkg.com/uuidv1/-/uuidv1-1.6.14.tgz#cbd3b6f5e3d0348a2635911ecfd04484a91b851d"
+  integrity sha512-34FVVCDDHzzcOglmrKbZP99+8/6StEzo3VU3MuKw0Mo0B/YBQ1bWNQU8s79ofNnrPlfI+7A9pkAdhmQ6CyLHFg==
 
 vary@^1, vary@~1.1.2:
   version "1.1.2"

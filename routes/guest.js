@@ -9,13 +9,12 @@ const Guest = require('../models/guest');
 
 const {
   isLoggedIn,
-  isNotLoggedIn,
-  validationLoggin,
+  isAdmin
 } = require('../helpers/middlewares');
 
-router.get('/', isLoggedIn(), async (req, res, next) => {
+router.get('/guests', isLoggedIn(), isAdmin(), async (req, res, next) => {
   try {
-    const allGuests = await Guest.find();
+    const allGuests = await Guest.find().populate('user');
     return res.status(200).json(allGuests);
   } catch(error) {
     next(error);

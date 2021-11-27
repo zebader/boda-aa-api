@@ -25,3 +25,14 @@ exports.validationLoggin = () => (req, res, next) => {
     next();
   }
 }
+
+exports.isAdmin = () => (req, res, next) => {
+
+    if (req.session.currentUser.role !== "admin") {
+        res.status(401).json({
+            error: "No tienes permisos"
+        })
+    } else {
+      next();
+    }
+  }

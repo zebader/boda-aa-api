@@ -56,9 +56,14 @@ router.delete( '/delete/:id', isLoggedIn(), async (req, res, next) => {
     res.status(400).json({ message: 'Specified id is not valid' });
     return;
   }
-  const userId = req.session.currentUser._id
+
     try {
+        const guest = await Guest.findById(req.params.id).populate('user');
+        const userId = guest.user[0]._id
+
       await Guest.findByIdAndRemove(req.params.id);
+
+
       await User.findByIdAndUpdate( userId, { $pull: { guests: { $elemMatch:{_id:req.params.id} }  }})
 
       return res.status(200).json({ message: 'Guest succesfully deleted' });

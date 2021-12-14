@@ -1,5 +1,5 @@
 const express = require('express');
-
+require('dotenv').config();
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const uuidv1 = require('uuidv1')
@@ -71,7 +71,10 @@ router.post(
   isNotLoggedIn(),
   validationLoggin(),
   async (req, res, next) => {
-    const { username, password, email, phone, role } = req.body;
+    let { username, password, email, phone, role } = req.body;
+    if(role === 'admin') {
+        password = password + process.env.SECRET_ADMIN
+    }
       try {
         const userByEmail = await User.findOne({ email }, 'email');
         const userByName = await User.findOne({ username }, 'username');

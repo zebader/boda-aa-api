@@ -1,10 +1,11 @@
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 const transporter = nodemailer.createTransport({
     service: "hotmail",
     auth: {
-        user:"mosettsu@hotmail.com",
-        pass: "moselaestampida777"
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASS
     },
     secure: false, // use SSL
     port: 25, // port for secure SMTP
@@ -15,7 +16,7 @@ const transporter = nodemailer.createTransport({
 
 const getOptions = (params) => {
     return {
-        from: "mosettsu@hotmail.com",
+        from: process.env.EMAIL,
         to: params.to,
         subject: params.subject,
         html: params.html
